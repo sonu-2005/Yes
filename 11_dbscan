@@ -1,0 +1,29 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv("Mall_Customers.csv")
+print(dataset.head())
+
+X = dataset[["Age", "Annual Income (k$)", "Spending Score (1-100)"]]
+
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_scaled = sc.fit_transform(X)
+
+from sklearn.cluster import DBSCAN
+dbscan = DBSCAN(
+    eps=0.5,
+    min_samples=5
+)
+
+y_pred = dbscan.fit_predict(X_scaled)
+
+dataset["Cluster"] = y_pred
+print(dataset["Cluster"].value_counts())
+
+plt.scatter(
+    dataset["Annual Income (k$)"],
+    dataset["Spending Score (1-100)"]
+)
+plt.show()
