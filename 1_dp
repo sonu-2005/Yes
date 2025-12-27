@@ -1,0 +1,35 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv("suv_data.csv")
+print(dataset.head())
+print(dataset.info())
+
+X = dataset.iloc[:, [2, 3]].values
+y = dataset.iloc[:, 4].values
+
+print(X)
+print(y)
+
+print(dataset.isnull())
+
+new_data = dataset.dropna(axis=0, how="any")
+print(new_data)
+
+dataset.replace(to_replace=np.nan, value=-99)
+print(dataset)
+
+dataset["gender"] = dataset["gender"].fillna("No Gender")
+print(dataset)
+
+print("Old data frame length:", len(dataset))
+print("New data frame length:", len(new_data))
+print("Number of rows with at least one NA value:",
+      len(dataset) - len(new_data))
+
+new_df1 = dataset.ffill()
+print(new_df1)
+
+new_df3 = dataset.dropna(how="all")
+print(new_df3)
