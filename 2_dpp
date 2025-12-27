@@ -1,0 +1,43 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("Titanic.csv")
+print(data.head())
+print(data.info())
+
+X = data.drop("Survived", axis=1)
+y = data["Survived"]
+
+print(X)
+print(y)
+
+X.drop(["Name", "Ticket", "Cabin"], axis=1, inplace=True)
+print(X)
+
+X["Age"] = X["Age"].fillna(X["Age"].mean())
+print(X)
+
+X["Embarked"] = X["Embarked"].fillna(X["Embarked"].mode()[0])
+print(X)
+
+X = pd.get_dummies(
+    X,
+    columns=["Sex", "Embarked"],
+    prefix=["Sex", "Embarked"],
+    drop_first=True
+)
+print(X)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=0
+)
+
+from sklearn.preprocessing import StandardScaler
+std_x = StandardScaler()
+X_train = std_x.fit_transform(X_train)
+X_test = std_x.transform(X_test)
+
+print(X_train)
+print(X_test)
